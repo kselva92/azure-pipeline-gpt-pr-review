@@ -13,7 +13,7 @@
   "version": {
     "Major": "1",
     "Minor": "0",
-    "Patch": "1"
+    "Patch": "8"
   },
   "minimumAgentVersion": "1.95.0",
   "instanceNameFormat": "GPTPullRequestReview $(message)",
@@ -54,6 +54,22 @@
       "defaultValue": "false",
       "required": false,
       "helpMarkDown": "Select this option to support self-signed certificate."
+    },
+    {
+      "name": "custom_prompt",
+      "type": "string",
+      "label": "Custom prompt",
+      "defaultValue": "",
+      "required": false,
+      "helpMarkDown": "Custom prompt to be added to original prompt. (optional)"
+    },
+    {
+      "name": "override_prompt",
+      "type": "boolean",
+      "label": "Override prompt",
+      "defaultValue": "false",
+      "required": false,
+      "helpMarkDown": "Select this option to override the original prompt."
     }
   ],
   "execution": {
