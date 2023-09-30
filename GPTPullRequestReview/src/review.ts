@@ -120,6 +120,7 @@ export async function reviewFile(
   3. Be CONCISE. No fluff. No verbosity.
   4. Rate issues (1-5, 5 highest). Optionally, add an emoji: 'Severity: 3 :emoji:'.
   5. Be CAUTIOUS. Avoid false positives. If unsure, lean towards not flagging.
+  6. When suggesting improvements, provide a CODE EXAMPLE for the fix whenever possible.
   Categories:
     1. Code Consistency
     2. Performance
@@ -187,8 +188,14 @@ export async function reviewFile(
             content: `Surrounding code : ${fileContent}`,
           },
         ],
-        max_tokens: 500,
+        max_tokens: 750,
       });
+
+      console.log(
+        "Completion tokens: " + response.data.usage?.completion_tokens,
+        "Prompt tokens" + response.data.usage?.prompt_tokens,
+        "Total tokens" + response.data.usage?.total_tokens
+      );
 
       choices = response.data.choices;
     } else if (aoiEndpoint) {
