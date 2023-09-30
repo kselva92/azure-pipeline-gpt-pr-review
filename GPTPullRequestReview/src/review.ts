@@ -193,8 +193,8 @@ export async function reviewFile(
 
       console.log(
         "Completion tokens: " + response.data.usage?.completion_tokens,
-        "Prompt tokens" + response.data.usage?.prompt_tokens,
-        "Total tokens" + response.data.usage?.total_tokens
+        "Prompt tokens: " + response.data.usage?.prompt_tokens,
+        "Total tokens: " + response.data.usage?.total_tokens
       );
 
       choices = response.data.choices;
