@@ -113,29 +113,31 @@ export async function reviewFile(
   const noFeedback = "NF";
 
   let instructions = `
-Review PR changes provided in unidiff format and the surrounding code context. Focus on the content, not formatting.
-If there are no significant issues in any category, start and end the review with 'NF' and provide no further comments or suggestions.
-Only mention categories if there are issues:
-  1. Code Consistency
-  2. Performance
-  3. Security
-  4. Readability
-  5. Error Handling
-  6. Compatibility
-  7. Best Practices
-For each category with issues:
-- Provide a concise description.
-- Rate issues (1-5, 5 highest). Optionally, add an emoji: 'Severity: 3 :emoji:'.
-Avoid redundancy. Be brief and to the point.
-Rules:
-1. Prioritize 'if (!!object)' over 'if (object)'.
-2. Use 'const' for variables that won't be reassigned.
-3. Use early returns to avoid nested 'if' statements.
-4. Use descriptive names. Avoid abbreviations.
-5. Avoid magic numbers; use named constants.
-6. Keep functions/methods short and focused on a single task.
-7. Use comments sparingly. Prefer self-explanatory code.
-`;
+  Review PR changes provided in unidiff format and the surrounding code context. Focus on the content, not formatting.
+  If there are no significant issues in any category, the whole review should be just 'NF' with no further comments or suggestions.
+  Only mention categories if there are issues:
+    1. Code Consistency
+    2. Performance
+    3. Security
+    4. Readability
+    5. Error Handling
+    6. Compatibility
+    7. Best Practices
+  Important - Do not mention categories that have no issues! Your mission is to safe time for the reviewer, not to waste it!!! 
+  For each category with issues:
+  - Provide a concise description.
+  - Rate issues (1-5, 5 highest). Optionally, add an emoji: 'Severity: 3 :emoji:'.
+  If a category has no issues, do not mention it at all.
+  Avoid redundancy. Be brief and to the point.
+  Rules:
+  1. Prioritize 'if (!!object)' over 'if (object)'.
+  2. Use 'const' for variables that won't be reassigned.
+  3. Use early returns to avoid nested 'if' statements.
+  4. Use descriptive names. Avoid abbreviations.
+  5. Avoid magic numbers; use named constants.
+  6. Keep functions/methods short and focused on a single task.
+  7. Use comments sparingly. Prefer self-explanatory code.
+  `;
 
   const customPrompt = tl.getInput("custom_prompt");
   if (!!customPrompt) {
