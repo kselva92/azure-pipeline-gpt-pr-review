@@ -4,20 +4,11 @@ import { CreateChatCompletionResponseChoicesInner, OpenAIApi } from "openai";
 import { addCommentToPR } from "./pr";
 import { Agent } from "https";
 import * as tl from "azure-pipelines-task-lib/task";
-import { encoding_for_model, TiktokenModel } from "@dqbd/tiktoken";
 
 const MAX_TOKENS = 2048; // This is an example. Adjust based on your OpenAI plan.
 
-function countTokens(model: string, str: string): number {
-  try {
-    const encoder = encoding_for_model(model as TiktokenModel);
-
-    const tokens = encoder.encode(str);
-    encoder.free();
-    return tokens.length;
-  } catch (error: any) {
-    return 0;
-  }
+function countTokens(str: string): number {
+  return str.split(/\s+/).length;
 }
 
 function truncateContent(content: string, maxTokens: number): string {
@@ -122,21 +113,20 @@ export async function reviewFile(
   const noFeedback = "NF";
 
   let instructions = `
-Review PR changes provided in unidiff format. Focus on the content, not formatting.
-Tasks:
-- If no issues, respond with '${noFeedback}'.
+Review PR changes provided in unidiff format and the surrounding code context. Focus on the content, not formatting.
+If there are no significant issues in any category, start and end the review with 'NF' and provide no further comments or suggestions.
+Only mention categories if there are issues:
+  1. Code Consistency
+  2. Performance
+  3. Security
+  4. Readability
+  5. Error Handling
+  6. Compatibility
+  7. Best Practices
+For each category with issues:
+- Provide a concise description.
 - Rate issues (1-5, 5 highest). Optionally, add an emoji: 'Severity: 3 :emoji:'.
-- Provide concise feedback. Offer fixes if possible.
-- Check for:
-  1. Code Consistency: Align with established conventions and patterns.
-  2. Performance: Identify inefficiencies or bottlenecks.
-  3. Security: Spot vulnerabilities or risky practices.
-  4. Readability: Ensure code is clear with meaningful names and comments.
-  5. Error Handling: Check for graceful error or exception handling.
-  6. Compatibility: Ensure changes maintain backward compatibility or are flagged if not.
-  7. Best Practices: Adhere to industry and language-specific standards.
-- Be precise; senior devs will review your feedback.
-- Keep comments brief. Developers will investigate further if needed.
+Avoid redundancy. Be brief and to the point.
 Rules:
 1. Prioritize 'if (!!object)' over 'if (object)'.
 2. Use 'const' for variables that won't be reassigned.
@@ -157,7 +147,7 @@ Rules:
   }
   const model = tl.getInput("model") || defaultOpenAIModel;
 
-  const totalTokens = countTokens(model, instructions + patch + fileContent);
+  const totalTokens = countTokens(instructions + patch + fileContent);
 
   // This is just the first version, not sure about the best way to handle this.
   if (totalTokens > MAX_TOKENS) {
@@ -166,7 +156,10 @@ Rules:
         totalTokens - MAX_TOKENS
       } tokens. Truncating...`
     );
-    fileContent = truncateContent(fileContent, MAX_TOKENS - 100); // Reserve some tokens for potential API overhead.
+    fileContent = truncateContent(
+      fileContent,
+      MAX_TOKENS - patch.length - instructions.length - 100
+    ); // Reserve some tokens for potential API overhead.
   }
 
   try {
