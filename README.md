@@ -51,7 +51,7 @@ Found and fixed a bug or improved on something? Contributions are welcome! Pleas
 To build and publish extension yourself.
 
 1. Build GPTPullRequestReview project
-2. Bump version in vss-extension.json
+2. Bump version in vss-extension.json and task.json
 3. Run npx tfx-cli extension create
 4. Upload extension to marketplace https://marketplace.visualstudio.com/manage/
 
