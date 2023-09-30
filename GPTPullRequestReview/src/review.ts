@@ -1,6 +1,6 @@
 import fetch from "node-fetch";
 import { git } from "./git";
-import { OpenAIApi } from "openai";
+import { CreateChatCompletionResponseChoicesInner, OpenAIApi } from "openai";
 import { addCommentToPR } from "./pr";
 import { Agent } from "https";
 import * as tl from "azure-pipelines-task-lib/task";
@@ -31,7 +31,7 @@ Another rules:
 `;
 
   try {
-    let choices: any;
+    let choices: CreateChatCompletionResponseChoicesInner[] = [];
 
     if (openai) {
       const response = await openai.createChatCompletion({
