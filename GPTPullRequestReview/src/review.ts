@@ -4,6 +4,7 @@ import { CreateChatCompletionResponseChoicesInner, OpenAIApi } from "openai";
 import { addCommentToPR } from "./pr";
 import { Agent } from "https";
 import * as tl from "azure-pipelines-task-lib/task";
+import { log } from "console";
 
 const MAX_TOKENS = 2048; // This is an example. Adjust based on your OpenAI plan.
 
@@ -113,9 +114,8 @@ export async function reviewFile(
   const noFeedback = "NF";
 
   let instructions = `
-  Review PR changes provided in unidiff format and the surrounding code context. Focus on the content, not formatting.
-  If there are no significant issues in any category, the whole review should be just 'NF' with no further comments or suggestions.
-  Only mention categories if there are issues:
+  Review PR changes in unidiff format and surrounding code context. If you find no significant issues across ALL categories, your ENTIRE response should be 'NF'. NOTHING ELSE. 
+  If there are issues in ANY category:
     1. Code Consistency
     2. Performance
     3. Security
@@ -123,20 +123,20 @@ export async function reviewFile(
     5. Error Handling
     6. Compatibility
     7. Best Practices
-  Important - Do not mention categories that have no issues! Your mission is to safe time for the reviewer, not to waste it!!! 
-  For each category with issues:
-  - Provide a concise description.
-  - Rate issues (1-5, 5 highest). Optionally, add an emoji: 'Severity: 3 :emoji:'.
-  If a category has no issues, do not mention it at all.
-  Avoid redundancy. Be brief and to the point.
+  ONLY then provide feedback. 
+  DO NOT, under any circumstances, mention categories that have no issues. Wasting the reviewer's time is unacceptable.
+  For categories with issues:
+    - Be concise.
+    - Rate issues (1-5, 5 highest). Optionally, add an emoji: 'Severity: 3 :emoji:'.
   Rules:
-  1. Prioritize 'if (!!object)' over 'if (object)'.
-  2. Use 'const' for variables that won't be reassigned.
-  3. Use early returns to avoid nested 'if' statements.
-  4. Use descriptive names. Avoid abbreviations.
-  5. Avoid magic numbers; use named constants.
-  6. Keep functions/methods short and focused on a single task.
-  7. Use comments sparingly. Prefer self-explanatory code.
+    1. It's generally better to use 'if (!!object)' over 'if (object)'.
+    2. Try to use 'const' for variables that won't be reassigned.
+    3. To improve readability, consider using early returns instead of nested 'if' statements.
+    4. Descriptive names are clearer than abbreviations.
+    5. Instead of magic numbers, named constants can be more informative.
+    6. Aim for functions/methods that are short and focused on a single task.
+    7. While comments can be helpful, it's always best if the code can explain itself.
+  Stick to the main instructions. No deviations.
   `;
 
   const customPrompt = tl.getInput("custom_prompt");
@@ -147,6 +147,9 @@ export async function reviewFile(
       instructions = `${customPrompt}\n${instructions}`;
     }
   }
+
+  log(`Instructions: ${instructions}`);
+
   const model = tl.getInput("model") || defaultOpenAIModel;
 
   const totalTokens = countTokens(instructions + patch + fileContent);
