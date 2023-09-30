@@ -2,7 +2,7 @@
     "manifestVersion": 1,
     "id": "AIPRR",
     "name": "AI Pull Request Reviewer by Blogic",
-    "version": "0.0.2",
+    "version": "0.0.5",
     "publisher": "blogic",
     "galleryFlags": [
         "Public",
@@ -42,7 +42,7 @@
     },
     "contributions": [
         {
-            "id": "AIPRR",
+            "id": "AIPullRequestReview",
             "type": "ms.vss-distributed-task.task",
             "targets": [
                 "ms.vss-distributed-task.tasks"

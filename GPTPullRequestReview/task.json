@@ -1,7 +1,7 @@
 {
-  "id": "94394f8d-6339-49d4-82a4-45a962866fdc",
-  "name": "AIPRR",
-  "friendlyName": "AI Pull Request Reviewer",
+  "id": "a56980a8-77ed-404f-a294-5f0414301e0a",
+  "name": "AIPullRequestReview",
+  "friendlyName": "AI Pull Request Review",
   "description": "This task uses OpenAI to generate a pull request review.",
   "author": "blogic",
   "helpMarkDown": "[More Information](https://github.com/gabriel-ecegi/azure-pipeline-gpt-pr-review)",
