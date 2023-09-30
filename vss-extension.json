@@ -2,7 +2,7 @@
     "manifestVersion": 1,
     "id": "AIPRR",
     "name": "AI Pull Request Reviewer by Blogic",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "publisher": "blogic",
     "galleryFlags": [
         "Public",
@@ -28,7 +28,7 @@
     ],
     "files": [
         {
-            "path": "AIPRR"
+            "path": "GPTPullRequestReview"
         }
     ],
     "repository": {
@@ -48,7 +48,7 @@
                 "ms.vss-distributed-task.tasks"
             ],
             "properties": {
-                "name": "AIPRR"
+                "name": "GPTPullRequestReview"
             }
         }
     ]

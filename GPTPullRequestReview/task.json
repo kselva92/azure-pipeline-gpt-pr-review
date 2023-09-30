@@ -1,10 +1,10 @@
 {
-  "id": "b42fa530-c4a6-11ed-87f6-d1f44a1fead1",
-  "name": "GPTPullRequestReview",
-  "friendlyName": "Review PullRequest by GPT",
-  "description": "This task use OpenAi GPT model to review PullRequests",
-  "author": "Mustapha Larhrouch",
-  "helpMarkDown": "[More Information](https://github.com/mlarhrouch/azure-pipeline-gpt-pr-review)",
+  "id": "94394f8d-6339-49d4-82a4-45a962866fdc",
+  "name": "AIPRR",
+  "friendlyName": "AI Pull Request Reviewer",
+  "description": "This task uses OpenAI to generate a pull request review.",
+  "author": "blogic",
+  "helpMarkDown": "[More Information](https://github.com/gabriel-ecegi/azure-pipeline-gpt-pr-review)",
   "category": "Utility",
   "visibility": [
     "Build"
@@ -24,7 +24,7 @@
       "label": "Api key",
       "defaultValue": "",
       "required": true,
-      "helpMarkDown": "Api key of OpenAi or Azure OpenAI."
+      "helpMarkDown": "API key of OpenAI or Azure OpenAI."
     },
     {
       "name": "model",
