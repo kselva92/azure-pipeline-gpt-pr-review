@@ -155,6 +155,7 @@ export async function reviewFile(
   const model = tl.getInput("model") || defaultOpenAIModel;
 
   const totalTokens = countTokens(instructions + patch + fileContent);
+  console.log(`Total tokens: ${totalTokens}. Max tokens: ${MAX_TOKENS}`);
 
   // This is just the first version, not sure about the best way to handle this.
   if (totalTokens > MAX_TOKENS) {
@@ -163,10 +164,9 @@ export async function reviewFile(
         totalTokens - MAX_TOKENS
       } tokens. Truncating...`
     );
-    fileContent = truncateContent(
-      fileContent,
-      MAX_TOKENS - patch.length - instructions.length - 100
-    ); // Reserve some tokens for potential API overhead.
+    const newLength = MAX_TOKENS - patch.length - instructions.length - 100;
+    console.log(`New length: ${newLength}`);
+    fileContent = truncateContent(fileContent, newLength);
   }
 
   try {
