@@ -69,11 +69,12 @@ function isFileWithIgnoredFileExtension(
   fileName: string,
   content: string
 ): boolean {
-  const fileExtension = fileName.slice(
-    ((fileName.lastIndexOf(".") - 1) >>> 0) + 2
-  );
+  const fileExtension = fileName.split(".").pop() || "";
 
-  if (IGNORED_EXTENSIONS.includes(`.${fileExtension}`) || isBinary(content)) {
+  if (
+    IGNORED_EXTENSIONS.some((x) => x === `.${fileExtension}`) ||
+    isBinary(content)
+  ) {
     return true;
   }
   return false;

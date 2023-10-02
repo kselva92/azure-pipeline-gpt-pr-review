@@ -2,7 +2,7 @@
     "manifestVersion": 1,
     "id": "AIPRR",
     "name": "AI Pull Request Reviewer by Blogic",
-    "version": "1.0.18",
+    "version": "1.0.19",
     "publisher": "blogic",
     "galleryFlags": [
         "Public",
