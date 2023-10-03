@@ -54,15 +54,16 @@ const IGNORED_EXTENSIONS = [
   ".wav",
 ];
 
-function isBinary(content: string): boolean {
-  // Check for non-textual characters in the first few bytes of the content
-  for (let i = 0; i < Math.min(24, content.length); i++) {
-    const charCode = content.charCodeAt(i);
-    if (charCode === 0 || charCode > 127) {
-      return true;
-    }
+async function fileExistsInBranch(
+  branch: string,
+  fileName: string
+): Promise<boolean> {
+  try {
+    await git.show([`${branch}:${fileName}`]);
+    return true;
+  } catch (error) {
+    return false;
   }
-  return false;
 }
 
 function isFileWithIgnoredFileExtension(
@@ -70,11 +71,11 @@ function isFileWithIgnoredFileExtension(
   content: string
 ): boolean {
   const fileExtension = fileName.split(".").pop() || "";
-
-  if (
-    IGNORED_EXTENSIONS.some((x) => x === `.${fileExtension}`) ||
-    isBinary(content)
-  ) {
+  const match = IGNORED_EXTENSIONS.find((x) => x === `.${fileExtension}`);
+  if (!!match) {
+    console.log(
+      `${fileExtension} is ignored. Found match in IGNORED_EXTENSIONS - ${match}.`
+    );
     return true;
   }
   return false;
@@ -89,6 +90,14 @@ export async function reviewFile(
   aoiEndpoint: string | undefined
 ) {
   console.log(`Start reviewing ${fileName} ...`);
+
+  const fileExists = await fileExistsInBranch(targetBranch, fileName);
+  if (!fileExists) {
+    console.log(
+      `${fileName} does not exist in ${targetBranch}. Skipping review.`
+    );
+    return;
+  }
 
   // const fileStatus = await git.status([fileName]);
   const isIgnoredGitStatus = await isFileWithIgnoredGitStatus(fileName);
@@ -131,7 +140,7 @@ export async function reviewFile(
     6. Compatibility
     7. Best Practices
   Rules for the reviewed code:
-    1. Prefer 'if (!!object)' over 'if (object)'.
+    1. Prefer 'if (!!object)' over 'if (object)' - this does not include functions or boolean variables.
     2. Use 'const' for variables that won't be reassigned.
     3. Use early returns to avoid nested 'if' statements.
     4. Descriptive names are clearer than abbreviations.
@@ -149,8 +158,6 @@ export async function reviewFile(
       instructions = `${customPrompt}\n${instructions}`;
     }
   }
-
-  log(`Instructions: ${instructions}`);
 
   const model = tl.getInput("model") || defaultOpenAIModel;
 
