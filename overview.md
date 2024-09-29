@@ -1,6 +1,6 @@
 # GPT Pull Request review Task for Azure Pipelines
 
-The GPT Pull Request Review Task for Azure Pipelines is designed to use the GPT model from OpenAI to review Pull Requests and provide feedback as comments in the Pull Request.
+The AI Pull Request Review with Custom Prompt for Azure Pipelines is designed to use the GPT model from OpenAI to review Pull Requests and provide feedback as comments in the Pull Request.
 
 ## Setup
 
@@ -8,7 +8,7 @@ Before using this task, ensure that the build service has permissions to contrib
 
 ### Give permission to the build service agent
 
-![contribute_to_pr](https://github.com/mlarhrouch/azure-pipeline-gpt-pr-review/blob/main/images/contribute_to_pr.png?raw=true)
+![contribute_to_pr](https://github.com/kselva92/azure-pipeline-gpt-pr-review/blob/main/images/contribute_to_pr.png)
 
 ### Allow Task to access the system token
 
@@ -28,7 +28,7 @@ steps:
 
 Enable the option "Allow scripts to access the OAuth token" in the "Agent job" properties.
 
-![allow_access_token](https://github.com/mlarhrouch/azure-pipeline-gpt-pr-review/blob/main/images/allow_access_token.png?raw=true)
+![allow_access_token](https://github.com/kselva92/azure-pipeline-gpt-pr-review/blob/main/images/allow_access_token.png)
 
 ### Azure Open AI service
 
@@ -42,11 +42,11 @@ In case you don't use Azure Open AI Service, you can choose which model to use, 
 
 ### Install the extension
 
-To use the GPT Pull Request Review Task, first install the extension in your Azure DevOps organization. Click on the "Get it free" button and follow the prompts to install it. You may need to authorize the extension to access your Azure DevOps account.
+To use the AI Pull Request Review with Custom Prompt, first install the extension in your Azure DevOps organization. Click on the "Get it free" button and follow the prompts to install it. You may need to authorize the extension to access your Azure DevOps account.
 
 ### Add the task to the build pipeline
 
-After installing the extension, add the task to your build pipeline. Go to your build pipeline, click on the "+" icon to add a new task, and search for "Review PullRequest by GPT". Select it and add it to your pipeline.
+After installing the extension, add the task to your build pipeline. Go to your build pipeline, click on the "+" icon to add a new task, and search for "AI Pull Request Review with Custom Prompt". Select it and add it to your pipeline.
 
 ### Configure the task
 
