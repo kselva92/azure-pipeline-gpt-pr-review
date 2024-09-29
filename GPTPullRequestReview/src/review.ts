@@ -23,37 +23,6 @@ async function isFileWithIgnoredGitStatus(fileName: string) {
   return fileStatus.deleted.length > 0;
 }
 
-const IGNORED_EXTENSIONS = [
-  ".png",
-  ".jpg",
-  ".jpeg",
-  ".gif",
-  ".bmp",
-  ".tiff",
-  ".svg",
-  ".ico",
-  ".csv",
-  ".json",
-  ".zip",
-  ".tar",
-  ".gz",
-  ".rar",
-  ".pdf",
-  ".doc",
-  ".docx",
-  ".xls",
-  ".xlsx",
-  ".ppt",
-  ".pptx",
-  ".mp3",
-  ".mp4",
-  ".avi",
-  ".mov",
-  ".webm",
-  ".ogg",
-  ".wav",
-];
-
 async function fileExistsInBranch(
   branch: string,
   fileName: string
@@ -71,10 +40,13 @@ function isFileWithIgnoredFileExtension(
   content: string
 ): boolean {
   const fileExtension = fileName.split(".").pop() || "";
-  const match = IGNORED_EXTENSIONS.find((x) => x === `.${fileExtension}`);
+  
+  const ignoredExtensions = tl.getInput("file_extensions_to_ignore")?.split(",") || [];
+  
+  const match = ignoredExtensions.find((x) => x === `.${fileExtension}`);
   if (!!match) {
     console.log(
-      `${fileExtension} is ignored. Found match in IGNORED_EXTENSIONS - ${match}.`
+      `${fileExtension} is ignored. Found match in ignoredExtensions - ${match}.`
     );
     return true;
   }
@@ -92,22 +64,18 @@ export async function reviewFile(
   console.log(`Start reviewing ${fileName} ...`);
 
   const fileExists = await fileExistsInBranch(targetBranch, fileName);
+  
+  let fileContent;
+  
   if (!fileExists) {
     console.log(
-      `${fileName} does not exist in ${targetBranch}. Skipping review.`
+      `${fileName} does not exist in ${targetBranch}. New File.`
     );
-    return;
+    fileContent = await git.show([`HEAD:${fileName}`]);
+  } else {
+	fileContent = await git.show([`${targetBranch}:${fileName}`]);
   }
-
-  // const fileStatus = await git.status([fileName]);
-  const isIgnoredGitStatus = await isFileWithIgnoredGitStatus(fileName);
-  if (isIgnoredGitStatus) {
-    console.log(`${fileName} is deleted. Skipping review.`);
-    return;
-  }
-
-  let fileContent = await git.show([`${targetBranch}:${fileName}`]);
-
+  
   const isIgnoredFileExtension = isFileWithIgnoredFileExtension(
     fileName,
     fileContent
@@ -115,6 +83,13 @@ export async function reviewFile(
 
   if (isIgnoredFileExtension) {
     console.log(`${fileName} is ignored. Skipping review.`);
+    return;
+  }
+
+  // const fileStatus = await git.status([fileName]);
+  const isIgnoredGitStatus = await isFileWithIgnoredGitStatus(fileName);
+  if (isIgnoredGitStatus) {
+    console.log(`${fileName} is deleted. Skipping review.`);
     return;
   }
 
@@ -163,6 +138,8 @@ export async function reviewFile(
 
   const totalTokens = countTokens(instructions + patch + fileContent);
   console.log(`Total tokens: ${totalTokens}. Max tokens: ${MAX_TOKENS}`);
+  console.log(`Patch: ${patch}`);
+  console.log(`FileContent: ${fileContent}`);
 
   // This is just the first version, not sure about the best way to handle this.
   if (totalTokens > MAX_TOKENS) {

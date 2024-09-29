@@ -1,10 +1,10 @@
 {
-  "id": "a56980a8-77ed-404f-a294-5f0414301e0a",
-  "name": "AIPullRequestReview",
-  "friendlyName": "AI Pull Request Review",
-  "description": "This task uses OpenAI to generate a pull request review.",
-  "author": "blogic",
-  "helpMarkDown": "[More Information](https://github.com/gabriel-ecegi/azure-pipeline-gpt-pr-review)",
+  "id": "bef7c550-3737-4c39-83f5-eb08ccf87e82",
+  "name": "AIPullRequestReviewPrompt",
+  "friendlyName": "AI Pull Request Review with Custom Prompt",
+  "description": "This task uses OpenAI to generate a pull request review with custom prompt.",
+  "author": "kselva92",
+  "helpMarkDown": "[More Information](https://github.com/kselva92/azure-pipeline-gpt-pr-review)",
   "category": "Utility",
   "visibility": [
     "Build"
@@ -13,7 +13,7 @@
   "version": {
     "Major": "1",
     "Minor": "0",
-    "Patch": "23"
+    "Patch": "32"
   },
   "minimumAgentVersion": "1.95.0",
   "instanceNameFormat": "GPTPullRequestReview $(message)",
@@ -56,12 +56,12 @@
       "helpMarkDown": "Select this option to support self-signed certificate."
     },
     {
-      "name": "custom_prompt",
-      "type": "string",
-      "label": "Custom prompt",
-      "defaultValue": "",
-      "required": false,
-      "helpMarkDown": "Custom prompt to be added to original prompt. (optional)"
+      "name": "file_extensions_to_ignore",
+	  "type": "string",
+	  "label": "File Extensions to Ignore",
+	  "defaultValue": ".png,.jpg,.jpeg,.gif,.bmp,.tiff,.svg,.ico,.csv,.json,.zip,.tar,.gz,.rar,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.mp3,.mp4,.avi,.mov,.webm,.ogg,.wav",
+	  "required": false,
+	  "helpMarkDown": "List of file extensions to ignore (e.g., .zip, .mp3, .mp4). Leave empty to process all extensions."
     },
     {
       "name": "override_prompt",
@@ -70,6 +70,14 @@
       "defaultValue": "false",
       "required": false,
       "helpMarkDown": "Select this option to override the original prompt."
+    },
+    {
+      "name": "custom_prompt",
+      "type": "string",
+      "label": "Custom prompt",
+      "defaultValue": "",
+      "required": false,
+      "helpMarkDown": "Custom prompt to be added to original prompt. (optional)"
     }
   ],
   "execution": {

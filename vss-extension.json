@@ -1,9 +1,9 @@
 {
     "manifestVersion": 1,
-    "id": "AIPRR",
-    "name": "AI Pull Request Reviewer by Blogic",
-    "version": "1.0.23",
-    "publisher": "blogic",
+    "id": "AIPullRequestReviewPrompt",
+    "name": "AI Pull Request Review Prompt by kselva92",
+    "version": "1.0.32",
+    "publisher": "kselva92",
     "galleryFlags": [
         "Public",
         "Preview"
@@ -13,7 +13,7 @@
             "id": "Microsoft.VisualStudio.Services"
         }
     ],
-    "description": "AI Pull Request Reviewer by Blogic",
+    "description": "AI Pull Request Review Prompt by kselva92",
     "categories": [
         "Azure Pipelines"
     ],
@@ -24,7 +24,8 @@
         "OpenAI",
         "GPT",
         "pullRequest",
-        "review"
+        "review",
+		"prompt"
     ],
     "files": [
         {
@@ -33,7 +34,7 @@
     ],
     "repository": {
         "type": "git",
-        "uri": "https://github.com/gabriel-ecegi/azure-pipeline-gpt-pr-review"
+        "uri": "https://github.com/kselva92/azure-pipeline-gpt-pr-review"
     },
     "content": {
         "details": {
@@ -42,7 +43,7 @@
     },
     "contributions": [
         {
-            "id": "AIPullRequestReview",
+            "id": "AIPullRequestReviewPrompt",
             "type": "ms.vss-distributed-task.task",
             "targets": [
                 "ms.vss-distributed-task.tasks"
