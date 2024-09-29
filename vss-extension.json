@@ -2,7 +2,7 @@
     "manifestVersion": 1,
     "id": "AIPullRequestReviewPrompt",
     "name": "AI Pull Request Review Prompt by kselva92",
-    "version": "1.0.32",
+    "version": "1.0.33",
     "publisher": "kselva92",
     "galleryFlags": [
         "Public",
